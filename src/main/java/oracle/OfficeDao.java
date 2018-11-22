@@ -352,7 +352,7 @@ public class OfficeDao implements OfficeDaoble{
             System.out.println(check);
             rs=ps.executeQuery();
             while(rs.next()){
-                //System.out.println(rs.getInt(column));
+                System.out.println(rs.getInt(column));
                 result=rs.getInt(column);
             }
             System.out.println("result_1:"+result);
@@ -382,7 +382,7 @@ public class OfficeDao implements OfficeDaoble{
 
         }
         catch(SQLException e){
-
+            e.printStackTrace();
         }
 
 

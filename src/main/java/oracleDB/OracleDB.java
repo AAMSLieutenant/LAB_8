@@ -42,29 +42,29 @@ public class OracleDB {
 
             OracleDaoFactory df=new OracleDaoFactory();//Получение объекта связи с БД
 
-//            OfficeDaoble of=df.getOfficeDao();//Получение объекта для работы с персистентным состоянием Office
-            //of.setRole(ADMIN_ROLE);
+            OfficeDaoble of=df.getOfficeDao();//Получение объекта для работы с персистентным состоянием Office
+            of.setRole(ADMIN_ROLE);
 //            of.setRole(MANAGER_ROLE);
-            //of.setRole(WORKER_ROLE);
+//            of.setRole(WORKER_ROLE);
 
             //of.create(new Office("NetBeans", 66, "NetBeansLocation"));
-//            of.read(31);
-            //of.update(id, new Office("ВАРТРУКК", 100, "KisusyIEV"));
+            of.read(31);
+//            of.update(31, new Office("ВАРТРУКК", 100, "KisusyIEV"));
 //            of.delete(31);
 //            of.getAll();
-            //of.quit();
+            of.quit();
 
 
 
 
 //            EmployeeDaoble em=df.getEmployeeDao();//Получение объекта для работы с персистентным состоянием Office
-            //em.setRole(ADMIN_ROLE);
+//            em.setRole(ADMIN_ROLE);
 //            em.setRole(MANAGER_ROLE);
             //em.setRole(WORKER_ROLE);
 
             //em.create(new Employee("MARK", 13, "Markus", "Developer", "12.12.2013", 332222d, null));
 
-            //em.read(id);
+//            em.read(33);
             //em.getAll();
             //em.update(id, new Employee("Maks", 1111, "Maksim", "Manager", "11.11.2001", 5555d, null));
 //            em.delete(33);
