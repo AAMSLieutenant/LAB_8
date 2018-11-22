@@ -1,0 +1,63 @@
+1. CREATE
+-------------------------------------------------------------
+INSERT INTO Objects (object_id, object_name, type_id, parent_object_id)
+VALUES (6, 'LondonOffice',6, null);
+
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (6, 6, 23);
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (7, 6, 'London');
+
+-------------------------------------------------------------
+2. READ
+-------------------------------------------------------------
+select o.OBJECT_ID as ID, 
+o.object_name as object, 
+a.ATTR_NAME as attribute, 
+p.text_info as text, 
+p.number_info as number_type
+
+from parameters p 
+
+inner join objects o on (p.OBJECT_ID=o.OBJECT_ID and o.TYPE_ID=6) AND p.OBJECT_ID=2
+inner join attributes a on a.ATTR_ID=p.ATTR_ID
+
+order by o.OBJECT_ID, a.attr_id;
+
+-------------------------------------------------------------
+3. UPDATE
+-------------------------------------------------------------
+update Objects
+set object_name='newOffice',
+    type_id=6,
+    parent_object_id=null
+where object_id=6;
+
+update Parameters
+set number_info=2222
+where object_id=6 and attr_id=6;
+
+update Parameters
+set text_info='LONSSSSSS'
+where object_id=6 and attr_id=7;
+-------------------------------------------------------------
+4. DELETE
+-------------------------------------------------------------
+delete from objects 
+where OBJECT_ID=5;
+-------------------------------------------------------------
+5. GETALL
+-------------------------------------------------------------
+select o.OBJECT_ID as ID, 
+o.object_name as object, 
+a.ATTR_NAME as attribute, 
+p.text_info as text, 
+p.number_info as number_type
+
+from parameters p 
+
+inner join objects o on p.OBJECT_ID=o.OBJECT_ID and o.TYPE_ID=6
+inner join attributes a on a.ATTR_ID=p.ATTR_ID
+
+order by o.OBJECT_ID, a.attr_id;
+-------------------------------------------------------------

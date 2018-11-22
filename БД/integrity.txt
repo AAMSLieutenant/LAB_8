@@ -1,0 +1,10 @@
+ALTER TABLE types ADD CONSTRAINT types_fk_types FOREIGN KEY(parent_type_id) REFERENCES types ON DELETE CASCADE;
+
+ALTER TABLE attributes ADD CONSTRAINT attributes_fk_types FOREIGN KEY(type_id) REFERENCES types ON DELETE CASCADE;
+
+ALTER TABLE objects ADD CONSTRAINT objects_fk_types FOREIGN KEY(type_id) REFERENCES types ON DELETE CASCADE;
+ALTER TABLE objects ADD CONSTRAINT objects_fk_objects FOREIGN KEY(parent_object_id) REFERENCES objects ON DELETE CASCADE;
+
+
+ALTER TABLE parameters ADD CONSTRAINT params_fk_attributes FOREIGN KEY(attr_id) REFERENCES attributes ON DELETE CASCADE;
+ALTER TABLE parameters ADD CONSTRAINT params_fk_objets FOREIGN KEY(object_id) REFERENCES objects ON DELETE CASCADE;

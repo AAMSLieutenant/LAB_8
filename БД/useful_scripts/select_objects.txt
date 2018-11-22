@@ -1,0 +1,13 @@
+select o.OBJECT_ID as ID, 
+o.object_name as object, 
+a.ATTR_NAME as attribute, 
+p.text_info as text, 
+p.number_info as number_type,
+p.DATE_INFO
+
+from parameters p 
+
+inner join objects o on p.OBJECT_ID=o.OBJECT_ID and o.TYPE_ID=16
+inner join attributes a on a.ATTR_ID=p.ATTR_ID
+
+order by o.OBJECT_ID, a.attr_id;

@@ -1,0 +1,71 @@
+
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+VALUES (11, 'obj', 11, 1, 1, 1, -1, 1, -1);
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+VALUES (12, 'People', 11, 1, 1, 1, -1, 1, -1);
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+VALUES (13, 'Department', 11, 1, 1, 1, -1, 1, -1);
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+VALUES (14, 'Location', 11, 1, 1, 1, -1, 1, -1);
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+VALUES (15, 'Employee', 12, 1, 1, 1, 1, 0, 0);
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+VALUES (16, 'Office', 14, 1, 1, 1, -1, 1, -1); 
+
+
+INSERT INTO Attributes (attr_id, attr_name, type_id)
+VALUES (21, 'emp_num', 15);
+INSERT INTO Attributes (attr_id, attr_name, type_id)
+VALUES (22, 'emp_name', 15);
+INSERT INTO Attributes (attr_id, attr_name, type_id)
+VALUES (23, 'emp_job', 15);
+INSERT INTO Attributes (attr_id, attr_name, type_id)
+VALUES (24, 'hiredate', 15);
+INSERT INTO Attributes (attr_id, attr_name, type_id)
+VALUES (25, 'salary', 15);
+INSERT INTO Attributes (attr_id, attr_name, type_id)
+VALUES (26, 'emp_count', 16);
+INSERT INTO Attributes (attr_id, attr_name, type_id)
+VALUES (27, 'office_loc', 16);
+
+INSERT INTO Objects (object_id, object_name, type_id, parent_object_id)
+VALUES ( (select to_number('31' || (to_char(sysdate, 'DDMMYYHH24MI')))from dual) , 'KievOffice', 16, null);
+INSERT INTO Objects (object_id, object_name, type_id, parent_object_id)
+VALUES ( (select to_number('32' || (to_char(sysdate, 'DDMMYYHH24MI')))from dual) , 'WashingtonOffice', 16, null);
+INSERT INTO Objects (object_id, object_name, type_id, parent_object_id)
+VALUES ( (select to_number('33' || (to_char(sysdate, 'DDMMYYHH24MI')))from dual) , 'Petya', 15, (SELECT object_id FROM OBJECTS WHERE object_name='KievOffice'));
+INSERT INTO Objects (object_id, object_name, type_id, parent_object_id)
+VALUES ( (select to_number('34' || (to_char(sysdate, 'DDMMYYHH24MI')))from dual) , 'Kolya', 15, (SELECT object_id FROM OBJECTS WHERE object_name='WashingtonOffice'));
+
+
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (26, (select object_id from objects where object_name='KievOffice'), 50);
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (27, (select object_id from objects where object_name='KievOffice'), 'Kiev');
+
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (26, (select object_id from objects where object_name='WashingtonOffice'), 100);
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (27, (select object_id from objects where object_name='WashingtonOffice'), 'Washington');
+
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (21, (select object_id from objects where object_name='Petya'), 1);
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (22, (select object_id from objects where object_name='Petya'), 'Petya');
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (23, (select object_id from objects where object_name='Petya'), 'Developer');
+INSERT INTO Parameters (attr_id, object_id, date_info)
+VALUES (24, (select object_id from objects where object_name='Petya'), TO_DATE('2015/05/13', 'yyyy/mm/dd'));
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (25, (select object_id from objects where object_name='Petya'), 1500);
+
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (21, (select object_id from objects where object_name='Kolya'), 2);
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (22, (select object_id from objects where object_name='Kolya'), 'Kolya');
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (23, (select object_id from objects where object_name='Kolya'), 'QA-Tester');
+INSERT INTO Parameters (attr_id, object_id, date_info)
+VALUES (24, (select object_id from objects where object_name='Kolya'), TO_DATE('2016/10/18', 'yyyy/mm/dd'));
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (25, (select object_id from objects where object_name='Kolya'), 1300);

@@ -1,0 +1,82 @@
+1. CREATE
+-------------------------------------------------------------
+INSERT INTO Objects (object_id, object_name, type_id, parent_object_id)
+VALUES (5, 'dev_2',5, 2);
+
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (1, 5, 3);
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (2, 5, 'EmployeeName');
+INSERT INTO Parameters (attr_id, object_id, text_info)
+VALUES (3, 5, 'EmployeeJob');
+INSERT INTO Parameters (attr_id, object_id, date_info)
+VALUES (4, 5, TO_DATE('2011/01/01', 'yyyy/mm/dd'));
+INSERT INTO Parameters (attr_id, object_id, number_info)
+VALUES (5, 5, 500);
+-------------------------------------------------------------
+2. READ
+-------------------------------------------------------------
+select o.OBJECT_ID as ID, 
+o.object_name as object, 
+a.ATTR_NAME as attribute, 
+p.text_info as text, 
+p.number_info as number_type, 
+p.DATE_INFO as date_type
+
+from parameters p 
+
+inner join objects o on (p.OBJECT_ID=o.OBJECT_ID and o.TYPE_ID=5) AND p.OBJECT_ID=3
+inner join attributes a on a.ATTR_ID=p.ATTR_ID
+
+order by o.OBJECT_ID, a.attr_id;
+
+-------------------------------------------------------------
+3. UPDATE
+-------------------------------------------------------------
+update Objects
+set object_name='update',
+    type_id=5,
+    parent_object_id=1
+where object_id=5;
+
+update Parameters
+set number_info=22
+where object_id=5 and attr_id=1;
+
+update Parameters
+set text_info='ssss'
+where object_id=5 and attr_id=2;
+
+update Parameters
+set text_info='jjjjj'
+where object_id=5 and attr_id=3;
+
+update Parameters
+set date_info=to_date('2000/02/02' ,'yyyy/mm/dd')
+where object_id=5 and attr_id=4;
+
+update Parameters
+set number_info=99999
+where object_id=5 and attr_id=5;
+-------------------------------------------------------------
+4. DELETE
+-------------------------------------------------------------
+delete from objects 
+where OBJECT_ID=5;
+-------------------------------------------------------------
+5. GETALL
+-------------------------------------------------------------
+select o.OBJECT_ID as ID, 
+o.object_name as object, 
+a.ATTR_NAME as attribute, 
+p.text_info as text, 
+p.number_info as number_type, 
+p.DATE_INFO as date_type
+
+from parameters p 
+
+inner join objects o on p.OBJECT_ID=o.OBJECT_ID and o.TYPE_ID=5
+inner join attributes a on a.ATTR_ID=p.ATTR_ID
+
+order by o.OBJECT_ID, a.attr_id;
+-------------------------------------------------------------

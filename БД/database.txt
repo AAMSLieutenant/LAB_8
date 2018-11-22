@@ -1,0 +1,36 @@
+DROP TABLE TYPES;
+DROP TABLE ATTRIBUTES;
+DROP TABLE OBJECTS;
+DROP TABLE PARAMETERS;
+DROP SEQUENCE TYPE_ID_INC;
+
+
+CREATE TABLE Types(
+type_id Integer NOT NULL PRIMARY KEY,
+type_name Varchar(10),
+parent_type_id Integer);
+
+CREATE TABLE Attributes(
+attr_id Integer NOT NULL PRIMARY KEY,
+attr_name Varchar(15),
+type_id Integer);
+
+CREATE TABLE Objects(
+object_id Integer NOT NULL PRIMARY KEY,
+object_name Varchar(20),
+type_id Integer,
+parent_object_id Integer);
+
+CREATE TABLE Parameters(
+attr_id Integer,
+object_id Integer,
+text_info Varchar(30),
+number_info Integer,
+date_info date);
+
+
+CREATE SEQUENCE type_id_inc
+START WITH 1
+INCREMENT BY 1
+MINVALUE 1
+NOMAXVALUE;

@@ -1,0 +1,1 @@
+select * from parameters order by object_id, attr_id;
