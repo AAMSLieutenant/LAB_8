@@ -5,21 +5,17 @@
  */
 package oracleDB;
 
-
 import oracle.*;
 import logic.Office;
 import logic.Employee;
 import interfaces.*;
-
-
 import java.util.*;
 import java.sql.*;
 import java.math.BigInteger;
-
-
-
 import java.util.Locale;
 import java.sql.Date;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 
 
@@ -36,10 +32,13 @@ public class OracleDB {
      */
     public static void main(String[] args)
     {
+
+        final Logger log=Logger.getLogger(OracleDB.class);
+        PropertyConfigurator.configure("log4j.properties");
+
         Locale.setDefault(Locale.US);
         try{
-            //System.out.println(Long.MAX_VALUE);
-
+            log.info("Application started");
             OracleDaoFactory df=new OracleDaoFactory();//Получение объекта связи с БД
 
             OfficeDaoble of=df.getOfficeDao();//Получение объекта для работы с персистентным состоянием Office

@@ -10,13 +10,12 @@ package oracle;
 import interfaces.DaoFactoriable;
 import interfaces.EmployeeDaoble;
 import interfaces.OfficeDaoble;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Locale;
 
 
 /**
@@ -30,64 +29,48 @@ public class OracleDaoFactory implements DaoFactoriable{
     private String url = "jdbc:oracle:thin:@localhost:1521:xe";//URL адрес
     private String driver = "oracle.jdbc.driver.OracleDriver";//Имя драйвера
 
+    private static final Logger log=Logger.getLogger(OracleDaoFactory.class);
+    static {
+        PropertyConfigurator.configure("log4j.properties");
+    }
 
     public OracleDaoFactory()
     {
         try
         {
-            System.out.println("-------- Oracle JDBC Connection Testing ------");
+            log.info("-------- Oracle JDBC Connection Testing ------");
             Class.forName(driver);//Регистрируем драйвер
         }
         catch (ClassNotFoundException e)
         {
-            System.out.println("Where is your Oracle JDBC Driver?");
+            log.error("JDBC Driver class load failture");
             e.printStackTrace();
         }
-        System.out.println("Oracle JDBC Driver Registered!");
-//        Connection connection;
-//
-//        try {
-//
-//            connection = DriverManager.getConnection(
-//                    "jdbc:oracle:thin:@localhost:1521:xe", "manager", "manager");
-//
-//        } catch (SQLException e) {
-//
-//            System.out.println("Connection Failed! Check output console");
-//            e.printStackTrace();
-//            return;
-//
-//        }
-//
-//        if (connection != null) {
-//            System.out.println("You made it, take control your database now!");
-//        } else {
-//            System.out.println("Failed to make connection!");
-//        }
+        log.info("Oracle JDBC Driver Registered!");
 
     }
-
-
 
 
     public Connection getConnection() throws SQLException
     {
+        log.info("DB Connection returned");
         return DriverManager.getConnection(url, user, password);
+
         //return null;
     }
-
 
     public EmployeeDaoble getEmployeeDao() throws Exception
     {
+        log.info("Employee class connection returned");
         return new EmployeeDao(DriverManager.getConnection(url, user, password));
+
         //return null;
     }
 
-
     public OfficeDaoble getOfficeDao() throws Exception
     {
+        log.info("Office class connection returned");
         return new OfficeDao(DriverManager.getConnection(url, user, password));
-
     }
 
 }

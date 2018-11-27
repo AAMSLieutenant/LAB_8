@@ -9,6 +9,8 @@ package oracle;
 import interfaces.EmployeeDaoble;
 import java.util.List;
 import logic.Employee;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -33,6 +34,10 @@ public class EmployeeDao implements EmployeeDaoble {
 
     private final Connection connection;//Объект соединения с БД
     private String role;//Роль пользователя
+    private static final org.apache.log4j.Logger log= Logger.getLogger(EmployeeDao.class);
+    static {
+        PropertyConfigurator.configure("log4j.properties");
+    }
 
     public EmployeeDao(Connection connection)
     {
@@ -318,7 +323,6 @@ public class EmployeeDao implements EmployeeDaoble {
 
             if(flag==true){
 
-
                 ps=connection.prepareStatement("DELETE FROM Parameters WHERE object_id=?");
                 ps.setLong(1, key);
                 ps.executeUpdate();
@@ -353,7 +357,7 @@ public class EmployeeDao implements EmployeeDaoble {
             return null;
         }
 
-
+        log.info("EmployeeDao getAll()");
         List<Employee> objects=new ArrayList<Employee>();
         List<Long> arr=new ArrayList<Long>();
 
@@ -388,6 +392,7 @@ public class EmployeeDao implements EmployeeDaoble {
         }
         catch(Exception e)
         {
+            log.error("EmployeeDao quit(): SQLError");
             e.printStackTrace();
         }
 
@@ -439,7 +444,6 @@ public class EmployeeDao implements EmployeeDaoble {
         }
 
         System.out.println(column);
-
         try{
 
             check="SELECT "+column+" FROM types WHERE type_id=15";
@@ -477,16 +481,16 @@ public class EmployeeDao implements EmployeeDaoble {
 
         }
         catch(SQLException e){
-
+            log.error("EmployeeDao concider(): SQLError");
         }
 
 
         if(result==1){
-            System.out.println("APPROWED");
+            log.info("EmployeeDao access type: APPROVED");
         }
 
         if(result==-1){
-            System.out.println("DENIED");
+            log.info("EmployeeDao access type: DENIED");
         }
 
         return result;

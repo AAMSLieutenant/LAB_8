@@ -9,6 +9,8 @@ package oracle;
 import interfaces.OfficeDaoble;
 import java.util.List;
 import logic.Office;
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -17,7 +19,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+
 /**
  *
  * @author Rostislav Stakhov
@@ -30,24 +32,25 @@ public class OfficeDao implements OfficeDaoble{
     private final Connection connection;
     private String role;
 
+    private static final org.apache.log4j.Logger log= Logger.getLogger(OfficeDao.class);
+    static {
+        PropertyConfigurator.configure("log4j.properties");
+    }
 
 
 
 
     public OfficeDao(Connection connection)
     {
-
         this.connection = connection;
     }
 
     /** Создает новую запись и соответствующий ей объект */
     public void create(Office office) throws Exception{
 
+
         if((consider(getRole(), 'w', 16))!=-1){
-
-
-            System.out.println("Office create()");
-
+            log.info("OfficeDao create");
             int count=0;
             String statement="SELECT COUNT(*) FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -83,7 +86,14 @@ public class OfficeDao implements OfficeDaoble{
             ps.executeUpdate();
 
             connection.commit();
-            try{ps.close();}catch(SQLException e){}
+            try{
+                ps.close();
+            }
+            catch(SQLException e){
+                log.error("OfficeDao create(): SQLException");
+                e.printStackTrace();
+
+            }
 
         }
 
@@ -92,15 +102,12 @@ public class OfficeDao implements OfficeDaoble{
     /** Возвращает объект соответствующий записи с первичным ключом key или null */
     public Office read(long key) throws Exception{
 
+
         if((consider(getRole(), 'r', 16))==-1){
+            log.error("OfficeDao read error");
             return null;
         }
-
-
-        System.out.println("Office read()");
-
-
-
+        log.info("OfficeDao read");
         String statement="select o.object_id, o.object_name, p.text_info, p.number_info, a.attr_id"
                 +" from objects o"
                 +" inner join attributes a on a.TYPE_ID=16"
@@ -128,7 +135,12 @@ public class OfficeDao implements OfficeDaoble{
 
         }
         System.out.println("------------------------------");
-        try{ps.close();}catch(SQLException e){}
+        try{
+            ps.close();
+        }
+        catch(SQLException e){
+            log.error("OfficeDao read(): SQLException");
+        }
         return o;
 
     }
@@ -136,9 +148,10 @@ public class OfficeDao implements OfficeDaoble{
     /** Сохраняет состояние объекта group в базе данных */
     public void update(long key, Office office) throws Exception{
 
+
         if(consider(getRole(), 'w', 16)!=-1)
         {
-            System.out.println("Office update()");
+            log.info("OfficeDao update");
             boolean flag=false;
             String statement="SELECT object_id FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -194,10 +207,16 @@ public class OfficeDao implements OfficeDaoble{
 
             }
             else{
-                System.out.println("WRONG ID");
+                log.error("OfficeDao update error: wrong ID");
+//                System.out.println("WRONG ID");
             }
 
-            try{ps.close();}catch(SQLException e){}
+            try{
+                ps.close();
+            }
+            catch(SQLException e){
+                log.error("OfficeDao update(): SQLException");
+            }
 
         }
     }
@@ -208,8 +227,7 @@ public class OfficeDao implements OfficeDaoble{
         System.out.println(consider(getRole(), 'w', 16));
         if(consider(getRole(), 'w', 16)==1)
         {
-
-            System.out.println("Office delete()");
+            log.info("OfficeDao delete");
             boolean flag=false;
             String statement="SELECT object_id FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -239,11 +257,17 @@ public class OfficeDao implements OfficeDaoble{
 
             }
             else{
-                System.out.println("WRONG OBJECT ID");
+                log.error("OfficeDao delete(): SQLException");
             }
 
 
-            try{ps.close();}catch(SQLException e){}
+            try{
+                ps.close();
+            }
+            catch(SQLException e){
+                e.printStackTrace();
+                log.error("OfficeDao delete(): SQLException");
+            }
 
 
         }
@@ -261,10 +285,10 @@ public class OfficeDao implements OfficeDaoble{
         //System.out.println(consider(getRole(), 'r', 16));
 
         if((consider(getRole(), 'r', 16))==-1){
-
+            log.error("OfficeDao getAll error");
             return null;
         }
-
+        log.error("OfficeDao getAll(): SQLException");
 
         String statement="SELECT object_id FROM Objects where type_id=16";
 
@@ -286,27 +310,33 @@ public class OfficeDao implements OfficeDaoble{
 
     public void quit(){
 
+        log.info("OfficeDao closing connection");
         try
         {
             this.connection.close();
         }
         catch(Exception e)
         {
+            log.error("OfficeDao quit(): Exception");
             e.printStackTrace();
+
         }
 
 
     }
 
-    public String getRole(){return this.role;}
+    public String getRole(){
+        return this.role;
+    }
 
     public void setRole(String role){
+
         this.role=role;
     }
 
     public int consider(String role, char mode, int type){
 
-
+        log.info("OfficeDao concider");
         String check=new String();
         PreparedStatement ps=null;
         ResultSet rs=null;
@@ -342,8 +372,7 @@ public class OfficeDao implements OfficeDaoble{
                 column="WWRITE";
             }
         }
-
-        System.out.println(column);
+        log.info("OfficeDao concider(): current role: "+column);
 
         try{
 
@@ -355,8 +384,10 @@ public class OfficeDao implements OfficeDaoble{
                 System.out.println(rs.getInt(column));
                 result=rs.getInt(column);
             }
-            System.out.println("result_1:"+result);
+
+            log.info("OfficeDao Office type: "+result);
             if(result==0){
+                log.info("OfficeDao Office type: ACCESS UNCONFIGURED");
                 check="SELECT "+column+" FROM types WHERE type_id=14";
                 ps=connection.prepareStatement(check);
                 System.out.println(check);
@@ -365,33 +396,35 @@ public class OfficeDao implements OfficeDaoble{
                     //System.out.println(rs.getInt(column));
                     result=rs.getInt(column);
                 }
-                System.out.println("result_2:"+result);
+                log.info("OfficeDao Location type: "+result);
             }
 
             if(result==0){
+                log.info("OfficeDao Location type: ACCESS UNCONFIGURED");
                 check="SELECT "+column+" FROM types WHERE type_id=11";
                 ps=connection.prepareStatement(check);
-                System.out.println(check);
                 rs=ps.executeQuery();
                 while(rs.next()){
                     //system.out.println(rs.getInt(column));
                     result=rs.getInt(column);
                 }
-                System.out.println("result_3:"+result);
+                log.info("OfficeDao Object type: "+result);
             }
 
         }
         catch(SQLException e){
+            log.error("OfficeDao concider(): SQLException");
             e.printStackTrace();
         }
 
 
         if(result==1){
-            System.out.println("APPROWED");
+            log.info("OfficeDao access type: APPROWED");
+
         }
 
         if(result==-1){
-            System.out.println("DENIED");
+            log.info("OfficeDao access type: APPROWED");
         }
 
         return result;
