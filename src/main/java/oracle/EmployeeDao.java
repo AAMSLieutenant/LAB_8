@@ -48,9 +48,9 @@ public class EmployeeDao implements EmployeeDaoble {
     public void create(Employee employee) throws Exception{
 
         if((consider(getRole(), 'w', 15))==1){
+            log.info("Employee create()");
 
-
-            System.out.println("Employee create()");
+//            System.out.println("Employee create()");
 
 
             int count=0;
@@ -130,7 +130,13 @@ public class EmployeeDao implements EmployeeDaoble {
 
 
 
-            try{ps.close();}catch(SQLException e){}
+            try{
+                ps.close();
+            }
+            catch(SQLException e){
+                log.error("EmployeeDao create(): SQLException");
+                e.printStackTrace();
+            }
 
         }
 
@@ -140,10 +146,11 @@ public class EmployeeDao implements EmployeeDaoble {
     public Employee read(long key) throws Exception{
 
         if((consider(getRole(), 'r', 15))==-1){
+            log.error("EmployeeDao read() access error");
             return null;
         }
+        log.info("EmployeeDao read()");
 
-        System.out.println("Employee read()");
 
 
 
@@ -191,7 +198,12 @@ public class EmployeeDao implements EmployeeDaoble {
 
         System.out.println("------------------------------");
 
-        try{ps.close();}catch(SQLException ex){}
+        try{
+            ps.close();
+        }
+        catch(SQLException ex){
+            log.error("Employee read(): SQLException");
+        }
 //
         return e;
 
@@ -206,8 +218,8 @@ public class EmployeeDao implements EmployeeDaoble {
         if((consider(getRole(), 'w', 15))==1){
 
 
-            System.out.println("Employee update()");
 
+            log.info("EmployeeDao update()");
             boolean flag=false;
             String statement="SELECT object_id FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -215,15 +227,14 @@ public class EmployeeDao implements EmployeeDaoble {
             while(rs.next()){
                 if(rs.getLong(1)==key){
                     flag=true;
-                    System.out.println("MATCH: "+rs.getLong(1));
+                    log.info("EmployeeDao update() MATCH: "+rs.getLong(1));
                     break;
                 }
             }
 
             if(flag==true){
-
-                System.out.println("Update started");
-                System.out.println(employee.getObjName());
+                log.info("EmployeeDao update() started");
+                log.info(employee.getObjName());
                 statement="UPDATE objects SET object_name=?, parent_object_id=? WHERE object_id=?";
 
 
@@ -293,8 +304,17 @@ public class EmployeeDao implements EmployeeDaoble {
                 //
 
             }
+            else{
+                log.error("EmployeeDao update() error: wrong object ID");
+            }
 
-            try{ps.close();}catch(SQLException e){}
+            try{
+                ps.close();
+            }
+            catch(SQLException e){
+                log.error("EmployeeDao update(): SQLException");
+                e.printStackTrace();
+            }
 
         }
 
@@ -305,10 +325,7 @@ public class EmployeeDao implements EmployeeDaoble {
 
         if((consider(getRole(), 'w', 15))==1){
 
-
-            System.out.println("Employee delete()");
-
-
+            log.info("EmployeeDao delete()");
             boolean flag=false;
             String statement="SELECT object_id FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -337,11 +354,17 @@ public class EmployeeDao implements EmployeeDaoble {
 
             }
             else{
-                System.out.println("WRONG OBJECT ID");
+                log.error("OfficeDao delete():wrong object ID");
             }
 
 
-            try{ps.close();}catch(SQLException e){}
+            try{
+                ps.close();
+            }
+            catch(SQLException e) {
+                e.printStackTrace();
+                log.error("EmployeeDao delete(): SQLException");
+            }
 
         }
 
@@ -351,9 +374,9 @@ public class EmployeeDao implements EmployeeDaoble {
     /** Возвращает список объектов соответствующих всем записям в базе данных */
     public List<Employee> getAll() throws Exception{
 
-
+        log.info("EmployeeDao getAll()");
         if((consider(getRole(), 'r', 15))==-1){
-
+            log.error("EmployeeDao getAll() access error");
             return null;
         }
 
@@ -361,7 +384,8 @@ public class EmployeeDao implements EmployeeDaoble {
         List<Employee> objects=new ArrayList<Employee>();
         List<Long> arr=new ArrayList<Long>();
 
-        System.out.println("Employee getAll()");
+
+        log.error("EmployeeDao getAll(): SQLException");
 
         String statement="SELECT object_id FROM Objects where type_id=15";
 
@@ -385,14 +409,14 @@ public class EmployeeDao implements EmployeeDaoble {
     }
 
     public void quit(){
-
+        log.info("EmployeeDao closing connection");
         try
         {
             this.connection.close();
         }
         catch(Exception e)
         {
-            log.error("EmployeeDao quit(): SQLError");
+            log.error("EmployeeDao quit(): SQLException");
             e.printStackTrace();
         }
 
@@ -406,6 +430,7 @@ public class EmployeeDao implements EmployeeDaoble {
 
     public int consider(String role, char mode, int type){
 
+        log.info("EmployeeDao concider()");
         System.out.println("Working in "+role.toUpperCase()+" mode:");
         String check=new String();
         PreparedStatement ps=null;
@@ -443,7 +468,7 @@ public class EmployeeDao implements EmployeeDaoble {
             }
         }
 
-        System.out.println(column);
+        log.info("EmployeeDao concider() current role: "+column);
         try{
 
             check="SELECT "+column+" FROM types WHERE type_id=15";
@@ -454,8 +479,10 @@ public class EmployeeDao implements EmployeeDaoble {
                 //System.out.println(rs.getInt(column));
                 result=rs.getInt(column);
             }
+            log.info("OfficeDao Employee type: "+result);
             //System.out.println("result_1:"+result);
             if(result==0){
+                log.info("EmployeeDao Employee type: ACCESS UNCONFIGURED");
                 check="SELECT "+column+" FROM types WHERE type_id=12";
                 ps=connection.prepareStatement(check);
                 System.out.println(check);
@@ -464,10 +491,12 @@ public class EmployeeDao implements EmployeeDaoble {
                     //System.out.println(rs.getInt(column));
                     result=rs.getInt(column);
                 }
+                log.info("OfficeDao People type: "+result);
                 //System.out.println("result_2:"+result);
             }
 
             if(result==0){
+                log.info("OfficeDao People type: ACCESS UNCONFIGURED");
                 check="SELECT "+column+" FROM types WHERE type_id=11";
                 ps=connection.prepareStatement(check);
                 System.out.println(check);
@@ -477,11 +506,13 @@ public class EmployeeDao implements EmployeeDaoble {
                     result=rs.getInt(column);
                 }
                 //System.out.println("result_3:"+result);
+                log.info("EmployeeDao Object Type: "+result);
             }
 
         }
         catch(SQLException e){
-            log.error("EmployeeDao concider(): SQLError");
+            log.error("EmployeeDao concider(): SQLException");
+            e.printStackTrace();
         }
 
 

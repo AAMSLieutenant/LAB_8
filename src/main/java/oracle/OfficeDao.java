@@ -50,7 +50,7 @@ public class OfficeDao implements OfficeDaoble{
 
 
         if((consider(getRole(), 'w', 16))!=-1){
-            log.info("OfficeDao create");
+            log.info("OfficeDao create()");
             int count=0;
             String statement="SELECT COUNT(*) FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -104,10 +104,10 @@ public class OfficeDao implements OfficeDaoble{
 
 
         if((consider(getRole(), 'r', 16))==-1){
-            log.error("OfficeDao read error");
+            log.error("OfficeDao read() access error");
             return null;
         }
-        log.info("OfficeDao read");
+        log.info("OfficeDao read()");
         String statement="select o.object_id, o.object_name, p.text_info, p.number_info, a.attr_id"
                 +" from objects o"
                 +" inner join attributes a on a.TYPE_ID=16"
@@ -120,8 +120,6 @@ public class OfficeDao implements OfficeDaoble{
         ResultSet rs=ps.executeQuery();
         Office o=new Office();
         while(rs.next()){
-
-            System.out.println("READY");
 
             o.setObjId(rs.getLong("object_id"));
 
@@ -151,7 +149,7 @@ public class OfficeDao implements OfficeDaoble{
 
         if(consider(getRole(), 'w', 16)!=-1)
         {
-            log.info("OfficeDao update");
+            log.info("OfficeDao update()");
             boolean flag=false;
             String statement="SELECT object_id FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -159,15 +157,15 @@ public class OfficeDao implements OfficeDaoble{
             while(rs.next()){
                 if(rs.getLong(1)==key){
                     flag=true;
-                    System.out.println("MATCH: "+rs.getLong(1));
+                    log.info("OfficeDao update() MATCH: "+rs.getLong(1));
                     break;
                 }
 
             }
 
             if(flag==true){
-                System.out.println("Update started");
-                System.out.println(office.getObjName());
+                log.info("OfficeDao update() started");
+                log.info(office.getObjName());
                 statement="UPDATE objects"
                         + " SET object_name=?"
                         + " WHERE object_id=?";
@@ -207,7 +205,7 @@ public class OfficeDao implements OfficeDaoble{
 
             }
             else{
-                log.error("OfficeDao update error: wrong ID");
+                log.error("OfficeDao update() error: wrong object ID");
 //                System.out.println("WRONG ID");
             }
 
@@ -216,6 +214,7 @@ public class OfficeDao implements OfficeDaoble{
             }
             catch(SQLException e){
                 log.error("OfficeDao update(): SQLException");
+                e.printStackTrace();
             }
 
         }
@@ -227,7 +226,7 @@ public class OfficeDao implements OfficeDaoble{
         System.out.println(consider(getRole(), 'w', 16));
         if(consider(getRole(), 'w', 16)==1)
         {
-            log.info("OfficeDao delete");
+            log.info("OfficeDao delete()");
             boolean flag=false;
             String statement="SELECT object_id FROM Objects";
             PreparedStatement ps=connection.prepareStatement(statement);
@@ -257,7 +256,7 @@ public class OfficeDao implements OfficeDaoble{
 
             }
             else{
-                log.error("OfficeDao delete(): SQLException");
+                log.error("EmployeeDao delete():wrong object ID");
             }
 
 
@@ -277,7 +276,7 @@ public class OfficeDao implements OfficeDaoble{
     /** Возвращает список объектов соответствующих всем записям в базе данных */
     public List<Office> getAll() throws Exception{
 
-        System.out.println("Office getAll()");
+        log.info("OfficeDao getAll()");
 
         List<Office> objects=new ArrayList<Office>();
         List<Long> arr=new ArrayList<Long>();
@@ -285,7 +284,7 @@ public class OfficeDao implements OfficeDaoble{
         //System.out.println(consider(getRole(), 'r', 16));
 
         if((consider(getRole(), 'r', 16))==-1){
-            log.error("OfficeDao getAll error");
+            log.error("OfficeDao getAll() access error");
             return null;
         }
         log.error("OfficeDao getAll(): SQLException");
@@ -317,7 +316,7 @@ public class OfficeDao implements OfficeDaoble{
         }
         catch(Exception e)
         {
-            log.error("OfficeDao quit(): Exception");
+            log.error("OfficeDao quit(): SQLException");
             e.printStackTrace();
 
         }
@@ -336,7 +335,8 @@ public class OfficeDao implements OfficeDaoble{
 
     public int consider(String role, char mode, int type){
 
-        log.info("OfficeDao concider");
+        log.info("OfficeDao concider()");
+        log.info("Working in "+role.toUpperCase()+" mode:");
         String check=new String();
         PreparedStatement ps=null;
         ResultSet rs=null;
@@ -424,7 +424,7 @@ public class OfficeDao implements OfficeDaoble{
         }
 
         if(result==-1){
-            log.info("OfficeDao access type: APPROWED");
+            log.info("OfficeDao access type: DENIED");
         }
 
         return result;
