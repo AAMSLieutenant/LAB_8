@@ -1,3 +1,11 @@
+DROP TABLE PARAMETERS;
+DROP TABLE OBJECTS;
+DROP TABLE ATTRIBUTES;
+DROP TABLE TYPES;
+
+
+
+
 CREATE TABLE Types(
 type_id Integer NOT NULL PRIMARY KEY,
 type_name Varchar(10),
@@ -6,8 +14,8 @@ aread Integer,
 awrite Integer,
 mread Integer,
 mwrite Integer,
-dread Integer,
-dwrite Integer);
+wread Integer,
+wwrite Integer);
 
 CREATE TABLE Attributes(
 attr_id Integer NOT NULL PRIMARY KEY,

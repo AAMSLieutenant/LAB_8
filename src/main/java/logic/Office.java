@@ -7,6 +7,7 @@
 package logic;
 
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -17,6 +18,33 @@ public class Office {
     private Long id;
     private String obj_name;
     private Integer emp_count;
+
+    @Override
+    public String toString() {
+        return "Office{" +
+                "id=" + id +
+                ", obj_name='" + obj_name + '\'' +
+                ", emp_count=" + emp_count +
+                ", location='" + location + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Office office = (Office) o;
+        return Objects.equals(id, office.id) &&
+                Objects.equals(obj_name, office.obj_name) &&
+                Objects.equals(emp_count, office.emp_count) &&
+                Objects.equals(location, office.location);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, obj_name, emp_count, location);
+    }
+
     private String location;
 
 

@@ -42,26 +42,26 @@ public class OracleDB {
             OracleDaoFactory df=new OracleDaoFactory();//Получение объекта связи с БД
 
             OfficeDaoble of=df.getOfficeDao();//Получение объекта для работы с персистентным состоянием Office
-            of.setRole(ADMIN_ROLE);
+//            of.setRole(ADMIN_ROLE);
 //            of.setRole(MANAGER_ROLE);
 //            of.setRole(WORKER_ROLE);
 
             //of.create(new Office("NetBeans", 66, "NetBeansLocation"));
-            of.read(31);
+//            of.read(31);
 //            of.update(31, new Office("ВАРТРУКК", 100, "KisusyIEV"));
 //            of.delete(31);
 //            of.getAll();
-            of.quit();
+//            of.quit();
 
 
 
 
-//            EmployeeDaoble em=df.getEmployeeDao();//Получение объекта для работы с персистентным состоянием Office
+            EmployeeDaoble em=df.getEmployeeDao();//Получение объекта для работы с персистентным состоянием Office
 //            em.setRole(ADMIN_ROLE);
 //            em.setRole(MANAGER_ROLE);
-            //em.setRole(WORKER_ROLE);
+            em.setRole(WORKER_ROLE);
 
-            //em.create(new Employee("MARK", 13, "Markus", "Developer", "12.12.2013", 332222d, null));
+            em.create(new Employee("MARK", 13, "Markus", "Developer", "12.12.2013", 332222d, null));
 
 //            em.read(33);
             //em.getAll();
@@ -71,7 +71,8 @@ public class OracleDB {
 
         }
         catch(Exception e){
-
+            log.info("Application Exception");
+            e.printStackTrace();
         }
 
     }

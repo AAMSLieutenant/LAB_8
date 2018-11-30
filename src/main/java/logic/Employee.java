@@ -7,6 +7,7 @@ package logic;
 
 import java.text.*;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
@@ -94,6 +95,40 @@ public class Employee {
     public void setEmpJob(String emp_job)
     {
         this.emp_job = emp_job;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", obj_name='" + obj_name + '\'' +
+                ", emp_num=" + emp_num +
+                ", emp_name='" + emp_name + '\'' +
+                ", emp_job='" + emp_job + '\'' +
+                ", hire_date=" + hire_date +
+                ", salary=" + salary +
+                ", parent_object_id=" + parent_object_id +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Employee employee = (Employee) o;
+        return Objects.equals(id, employee.id) &&
+                Objects.equals(obj_name, employee.obj_name) &&
+                Objects.equals(emp_num, employee.emp_num) &&
+                Objects.equals(emp_name, employee.emp_name) &&
+                Objects.equals(emp_job, employee.emp_job) &&
+                Objects.equals(hire_date, employee.hire_date) &&
+                Objects.equals(salary, employee.salary) &&
+                Objects.equals(parent_object_id, employee.parent_object_id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, obj_name, emp_num, emp_name, emp_job, hire_date, salary, parent_object_id);
     }
 
     public Date getEmpHireDate()

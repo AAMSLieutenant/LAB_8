@@ -188,13 +188,13 @@ public class EmployeeDao implements EmployeeDaoble {
 
 
         }
-        System.out.println("id:"+e.getId());
-        System.out.println("number:"+e.getEmpNum());
-        System.out.println("name:"+e.getEmpName());
-        System.out.println("job:"+e.getEmpJob());
-        System.out.println("hiredate:"+e.getEmpHireDate());
-        System.out.println("salary:"+e.getSalary());
-
+//        System.out.println("id:"+e.getId());
+//        System.out.println("number:"+e.getEmpNum());
+//        System.out.println("name:"+e.getEmpName());
+//        System.out.println("job:"+e.getEmpJob());
+//        System.out.println("hiredate:"+e.getEmpHireDate());
+//        System.out.println("salary:"+e.getSalary());
+        System.out.println(e);
 
         System.out.println("------------------------------");
 
@@ -507,6 +507,9 @@ public class EmployeeDao implements EmployeeDaoble {
                 }
                 //System.out.println("result_3:"+result);
                 log.info("EmployeeDao Object Type: "+result);
+            }
+            if(result==0){
+                log.info("CORE Employee/Object ACCESS DENIED");
             }
 
         }

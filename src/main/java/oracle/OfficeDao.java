@@ -129,8 +129,8 @@ public class OfficeDao implements OfficeDaoble{
 
             if(rs.getInt("attr_id")==27) o.setLocation(rs.getString("text_info"));
 
-            System.out.println("id:"+o.getObjId()+"\n"+"Шифр:"+o.getObjName()+"\n"+"Город:"+o.getLocation()+"\n"+"Сотрудники:"+o.getEmpCount());
-
+//            System.out.println("id:"+o.getObjId()+"\n"+"Шифр:"+o.getObjName()+"\n"+"Город:"+o.getLocation()+"\n"+"Сотрудники:"+o.getEmpCount());
+            System.out.println(o);
         }
         System.out.println("------------------------------");
         try{
@@ -405,10 +405,13 @@ public class OfficeDao implements OfficeDaoble{
                 ps=connection.prepareStatement(check);
                 rs=ps.executeQuery();
                 while(rs.next()){
-                    //system.out.println(rs.getInt(column));
+//                    System.out.println("COLLUUUMMMNNN"+rs.getInt(column));
                     result=rs.getInt(column);
                 }
                 log.info("OfficeDao Object type: "+result);
+            }
+            if(result==0){
+                log.info("CORE Office/object ACCESS DENIED");
             }
 
         }

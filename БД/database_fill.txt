@@ -1,15 +1,15 @@
 
-INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, wread, wwrite)
 VALUES (11, 'obj', 11, 1, 1, 1, -1, 1, -1);
-INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, wread, wwrite)
 VALUES (12, 'People', 11, 1, 1, 1, -1, 1, -1);
-INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, wread, wwrite)
 VALUES (13, 'Department', 11, 1, 1, 1, -1, 1, -1);
-INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, wread, wwrite)
 VALUES (14, 'Location', 11, 1, 1, 1, -1, 1, -1);
-INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, wread, wwrite)
 VALUES (15, 'Employee', 12, 1, 1, 1, 1, 0, 0);
-INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, dread, dwrite)
+INSERT INTO Types (type_id, type_name, parent_type_id, aread, awrite, mread, mwrite, wread, wwrite)
 VALUES (16, 'Office', 14, 1, 1, 1, -1, 1, -1); 
 
 
